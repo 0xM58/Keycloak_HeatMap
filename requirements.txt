@@ -1,0 +1,12 @@
+python-dotenv
+sqlalchemy
+httpx
+cloud-sql-python-connector[pg8000]
+pandas
+numpy
+matplotlib
+basemap
+fastapi
+uvicorn[standard]
+pydantic
+jinja2

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Geolocation Heatmap</title>
+    <meta http-equiv="refresh" content="30">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🌍 IP Geolocation Heatmap</h1>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">Total IPs</div>
+                <div class="stat-value">{{ stats.total_ips }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Located IPs</div>
+                <div class="stat-value">{{ stats.located_ips }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value">{{ stats.pending_ips }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">{{ stats.total_users }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <img src="data:image/png;base64,{{ heatmap_image }}" alt="Heatmap">
+    </div>
+
+    <div class="table-container">
+        <h2>IP Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Users</th>
+                    <th>Location</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ip_data[:50] %}
+                <tr>
+                    <td>{{ row.ip }}</td>
+                    <td>{{ row.user_count }}</td>
+                    <td>{{ "%.4f, %.4f"|format(row.latitude, row.longitude) }}</td>
+                    <td>{{ row.last_updated }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Page auto-refreshes every 30 seconds
+    </div>
+</body>
+</html>
