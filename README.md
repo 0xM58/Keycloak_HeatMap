@@ -2,6 +2,17 @@
 
 Track and visualize shared IP addresses from Keycloak sessions.
 
+![Heatmap Interface](static/images/image.png)
+
+## Prerequisites
+
+Current config uses **GCP hosted PostgreSQL** but can be refactored to use other databases.
+
+For GCP setup:
+```bash
+gcloud auth login --update-adc
+```
+
 ## Quick Start
 
 ```bash
@@ -44,3 +55,7 @@ DB_SCHEMA=your-schema
 KC_REALM_ID=your-realm-id
 KEYCDN_USER_AGENT=your-user-agent
 ```
+
+## Deployment
+
+This script can be deployed as a **sidecar container** alongside Keycloak. However, a refactoring of environment variables is needed to match secrets consumed by Keycloak (e.g., using Kubernetes secrets/ConfigMaps instead of `.env` file).
