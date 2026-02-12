@@ -53,7 +53,6 @@ DB_USER=your-user
 DB_PASSWORD=your-password
 DB_SCHEMA=your-schema
 KC_REALM_ID=your-realm-id
-KEYCDN_USER_AGENT=your-user-agent
 ```
 
 ## Deployment

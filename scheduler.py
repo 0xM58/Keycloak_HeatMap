@@ -27,8 +27,6 @@ DB_SCHEMA = os.getenv("DB_SCHEMA")
 KC_REALM_ID = os.getenv("KC_REALM_ID")
 COLLECTION_INTERVAL = int(os.getenv("COLLECTION_INTERVAL", "3600"))
 
-KEYCDN_USER_AGENT = os.getenv("KEYCDN_USER_AGENT", "keycdn-tools:https://github.com")
-
 
 def connect_to_database() -> sqlalchemy.engine.base.Connection:
     """Connect to Google Cloud SQL"""
@@ -105,22 +103,17 @@ def collect_ip_data():
 def fetch_geolocation(ip: str) -> tuple[float | None, float | None]:
     """Fetch geolocation using keycdn-tools API"""
     try:
-        headers = {"User-Agent": KEYCDN_USER_AGENT}
         response = httpx.get(
-            f"https://tools.keycdn.com/geo.json?host={ip}",
-            headers=headers,
+            f"ipinfo.io/{ip}/json",
             timeout=10.0,
         )
         data = response.json()
+        if "loc" in data:
+            lat, lon = data["loc"].split(",")
+            return float(lat), float(lon)
+        else:
+            return None, None
 
-        if data.get("status") == "success" and "data" in data and "geo" in data["data"]:
-            geo = data["data"]["geo"]
-            lat = geo.get("latitude")
-            lon = geo.get("longitude")
-            if lat and lon:
-                return float(lat), float(lon)
-
-        return None, None
     except Exception as e:
         print(f"Error fetching geolocation for {ip}: {e}")
         return None, None
